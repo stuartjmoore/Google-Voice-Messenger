@@ -71,7 +71,7 @@ public class SMS
  */
 public class Person
 {
-    private String firstName = null;
-    private String lastName = null;
+    private String name = null;
+    private String nickname = null;
     private String phoneNumber = null;
 }
