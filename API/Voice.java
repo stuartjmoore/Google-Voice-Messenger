@@ -31,6 +31,15 @@ public class Voice
     {
     }
     
+    public List<Conversation> search(String query)
+    {
+    }
+    public List<Conversation> getConversationsFrom(Person person)
+    {
+        // search(person.phoneNumber);
+        // remove conversations not from person
+    }
+    
     public boolean sendSMS(Person to, String message)
     {
     }
