@@ -15,19 +15,19 @@ public class Voice
     {
     }
     
-    public List<SMS> getInbox()
+    public List<Conversation> getInbox()
     {
     }
-    public List<SMS> getStarred()
+    public List<Conversation> getStarred()
     {
     }
-    public List<SMS> getAllSMS()
+    public List<Conversation> getAllSMS()
     {
     }
-    public List<SMS> getTrash()
+    public List<Conversation> getTrash()
     {
     }
-    public List<SMS> getSpam()
+    public List<Conversation> getSpam()
     {
     }
     
@@ -36,6 +36,18 @@ public class Voice
     }
 }
 
+/*
+ *  A conversation is a grouping of single back-and-forth SMS messages.
+ *  Google Voice groups them for us.
+ */
+public class Conversation
+{
+    private List<SMS> messages;
+}
+
+/*
+ *  A single SMS message.
+ */
 public class SMS
 {
     private Person from = null;
@@ -43,6 +55,11 @@ public class SMS
     private String message = null;
 }
 
+/*
+ *  A person.
+ *  
+ *  Needs to some how be linked with the user's contact list.
+ */
 public class Person
 {
     private String firstName = null;
