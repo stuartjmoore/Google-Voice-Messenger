@@ -1,12 +1,20 @@
 import android.util;
 import android.net.http.AndroidHttpClient;
+import android.provider.ContactsContract;
 
+/**
+ * Main access point to the Google Voice servers
+ *
+ * Will this class be a singleton? Will the tokens be static?
+ */
 public class Voice
 {
     private String _username = null;
     private String _password = null;
     private String _phoneNumber = null;
-	    
+    
+    // Needed: Tokens
+    
     public Voice()
     {
     }
@@ -17,14 +25,14 @@ public class Voice
 	
 	public Voice(String username, String password, String phonenumber)
 	{
-	
+        
 	}
     
 	/**
-	* 
-	*
-	* @return	Whether the login request was successful
-	*/
+     * Log the user in
+     *
+     * @return	Whether the login request was successful
+     */
     public boolean login()
     {
     }
@@ -82,75 +90,75 @@ public class Voice
     {
     }
 	
-	/**
-	*
-	* @param	msg	Item to be deleted
-	* @return	Whether the item was deleted
-	*/
-	public boolean deleteItem(Message msg)
-	{
-	}
-	
-	/**
-	* Restores an item from trash
-	*
-	* @param	msg	Item to be restored
-	* @return	Whether the item was restored
-	*/
-	public boolean retoreItem(Message msg)
-	{	
-	}
-	
-	/**
-	* Stars or un-stars an item
-	*
-	* @param	msg	Item to be starred/un-starred
-	* @return	Whether the item was successfully starred/un-starred
-	*/
-	public boolean toggleStar(Message msg)
-	{
-	}
-	
-	/**
-	* Marks or un-marks as spam
-	*
-	* @param	msg	Item to be marked spam/not spam
-	* @return	Whether the item was successfully marked/unmarked as spam
-	*/
-	public boolean toggleSpam(Message msg)
-	{
-	}
-	
-	public boolean toggleRead(Message msg)
-	{
-	
-	}
-	
-	private boolean archive(Message msg)
-	{
-	}
-	
-	private boolean unarchive(Message msg)
-	{
-	}
-	
 	private JSONObject execute(String command)
 	{
 	}
 }
 
-/*
- *  A conversation is a grouping of single back-and-forth messages.
- *  Google Voice groups them for us.
+/**
+ * A conversation is a grouping of single back-and-forth messages
+ * Google Voice groups them for us
  */
 public class Conversation
 {
 	private Person _contact;
     private List<Message> _messages;
+    
+	/**
+     * Deletes a conversation
+     *
+     * @param	msg	Item to be deleted
+     * @return	Whether the item was deleted
+     */
+	public boolean delete()
+	{
+	}
+	
+	/**
+     * Restores an item from trash
+     *
+     * @param	msg	Item to be restored
+     * @return	Whether the item was restored
+     */
+	public boolean retore()
+	{
+	}
+	
+	/**
+     * Stars or un-stars an item
+     *
+     * @param	msg	Item to be starred/un-starred
+     * @return	Whether the item was successfully starred/un-starred
+     */
+	public boolean toggleStar()
+	{
+	}
+	
+	/**
+     * Marks or un-marks as spam
+     *
+     * @param	msg	Item to be marked spam/not spam
+     * @return	Whether the item was successfully marked/unmarked as spam
+     */
+	public boolean toggleSpam()
+	{
+	}
+	
+	public boolean toggleRead()
+	{
+	}
+	
+	private boolean archive()
+	{
+	}
+	
+	private boolean unarchive()
+	{
+	}
 }
 
-/*
- *  A single message.
+/**
+ * A single message
  */
 public class Message
 {
@@ -164,19 +172,29 @@ public class Message
 	private boolean _isNew = false;
 }
 
+/**
+ * Not for version 1.0, but it's always good to think ahead
+ */
 public class AudioMessage extends Message
 {
 	// TODO: store mp3 and ogg for recorded calls and voicemails
 }
 
-/*
- *  A person.
- *  
- *  Needs to some how be linked with the user's contact list.
+/**
+ * A contact
+ *
+ * Needs to be linked with the user's contact list.
  */
 public class Person
 {
-    private String _name = null;
-    private String _nickname = null;
+    private String _lookupKey = null; // Key to connect GV contact to devices
+    
+    private String _nameOnDevice = null;
+    private String _nameOnGoogleVoice = null;
+    
     private String _phoneNumber = null;
+    private String _displayNumber = null;
+    
+    private String _photoURI = null;
+    private String _photoThumbnailURI = null;
 }
