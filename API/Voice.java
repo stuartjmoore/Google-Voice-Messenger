@@ -96,13 +96,19 @@ public class Voice
 }
 
 /**
- * A conversation is a grouping of single back-and-forth messages
+ * A conversation is a grouping of back-and-forth messages
  * Google Voice groups them for us
  */
 public class Conversation
 {
-	private Person _contact;
+	private List<Person> _contacts; // Future proofing
     private List<Message> _messages;
+    
+	private String _id = null;
+	private boolean _isStarred = false;
+	private boolean _isSpam = false;
+	private boolean _isRead = false;
+	private boolean _isNew = false;
     
 	/**
      * Deletes a conversation
@@ -164,12 +170,9 @@ public class Message
 {
     private Person _from = null;
     private Date _date = null;
-	private String _transcript = null;
+	private String _text = null;
+    private int _type = 0; // 10 : recieved, 11 : sent (from GV)
 	private String _id = null;
-	private boolean _isStarred = false;
-	private boolean _isSpam = false;
-	private boolean _isRead = false;
-	private boolean _isNew = false;
 }
 
 /**
@@ -187,14 +190,16 @@ public class AudioMessage extends Message
  */
 public class Person
 {
-    private String _lookupKey = null; // Key to connect GV contact to devices
+    private String _lookupKey = null; // Key to connect GV contact to device list
     
     private String _nameOnDevice = null;
-    private String _nameOnGoogleVoice = null;
+    private String _nameOnServer = null;
     
     private String _phoneNumber = null;
-    private String _displayNumber = null;
+    private String _phoneNumberDisplay = null;
+    private int _phoneType = 0; // 7 : mobile (from GV)
     
-    private String _photoURI = null;
-    private String _photoThumbnailURI = null;
+    private String _photoURI = null; // Local device photo
+    private String _photoThumbnailURI = null; // Local device photo
+    private String _photoURL = null; // Server GV photo
 }
