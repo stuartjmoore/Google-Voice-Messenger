@@ -19,14 +19,13 @@ public class Voice
     {
     }
 	
-	public Voice(String username, String password)
-	{
-	}
+    public Voice(String username, String password)
+    {
+    }
 	
-	public Voice(String username, String password, String phonenumber)
-	{
-        
-	}
+    public Voice(String username, String password, String phonenumber)
+    {
+    }
     
 	/**
      * Log the user in
@@ -37,7 +36,6 @@ public class Voice
     {
     }
 	
-    
     public List<Conversation> getInbox()
     {
     }
@@ -49,34 +47,34 @@ public class Voice
     public List<Conversation> getText()
     {
     }
-	
-	public List<Conversation> getHistory()
-	{
-	}
-	
-	public List<Conversation> getRecordedCalls()
-	{
-	}
-	
-	public List<Conversation> getPlacedCalls()
-	{
-	}
-	
-	public List<Conversation> getReceivedCalls()
-	{
-	}
-	
-	public List<Conversation> getMissedCalls()
-	{
-	}
-	
+    
     public List<Conversation> getTrash()
     {
     }
+    
     public List<Conversation> getSpam()
     {
     }
-    
+	
+    /**
+     * Not for version 1.0, but it's always good to think ahead
+     */
+    public List<Conversation> getHistory()
+    {
+    }
+    public List<Conversation> getRecordedCalls()
+    {
+    }
+    public List<Conversation> getPlacedCalls()
+    {
+    }
+    public List<Conversation> getReceivedCalls()
+    {
+    }
+    public List<Conversation> getMissedCalls()
+    {
+    }
+	
     public List<Conversation> search(String query)
     {
     }
@@ -86,13 +84,9 @@ public class Voice
         // remove conversations not from person
     }
     
-    public boolean sendSMS(Message msg)
+    private JSONObject execute(String command)
     {
     }
-	
-	private JSONObject execute(String command)
-	{
-	}
 }
 
 /**
@@ -101,7 +95,7 @@ public class Voice
  */
 public class Conversation
 {
-	private List<Person> _contacts; // Future proofing
+    private List<Person> _contacts; // Future proofing
     private List<Message> _messages;
     
 	private String _id = null;
@@ -116,9 +110,9 @@ public class Conversation
      * @param	msg	Item to be deleted
      * @return	Whether the item was deleted
      */
-	public boolean delete()
-	{
-	}
+    public boolean delete()
+    {
+    }
 	
 	/**
      * Restores an item from trash
@@ -126,9 +120,9 @@ public class Conversation
      * @param	msg	Item to be restored
      * @return	Whether the item was restored
      */
-	public boolean retore()
-	{
-	}
+    public boolean retore()
+    {
+    }
 	
 	/**
      * Stars or un-stars an item
@@ -136,9 +130,9 @@ public class Conversation
      * @param	msg	Item to be starred/un-starred
      * @return	Whether the item was successfully starred/un-starred
      */
-	public boolean toggleStar()
-	{
-	}
+    public boolean toggleStar()
+    {
+    }
 	
 	/**
      * Marks or un-marks as spam
@@ -146,21 +140,21 @@ public class Conversation
      * @param	msg	Item to be marked spam/not spam
      * @return	Whether the item was successfully marked/unmarked as spam
      */
-	public boolean toggleSpam()
-	{
-	}
+    public boolean toggleSpam()
+    {
+    }
 	
-	public boolean toggleRead()
-	{
-	}
+    public boolean toggleRead()
+    {
+    }
 	
-	private boolean archive()
-	{
-	}
+    private boolean archive()
+    {
+    }
 	
-	private boolean unarchive()
-	{
-	}
+    private boolean unarchive()
+    {
+    }
 }
 
 /**
@@ -170,9 +164,13 @@ public class Message
 {
     private Person _from = null;
     private Date _date = null;
-	private String _text = null;
+    private String _text = null;
     private int _type = 0; // 10 : recieved, 11 : sent (from GV)
-	private String _id = null;
+    private String _id = null;
+    
+    public boolean send()
+    {
+    }
 }
 
 /**
