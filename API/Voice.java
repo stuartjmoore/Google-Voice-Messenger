@@ -97,13 +97,13 @@ public class Conversation
 {
     private List<Person> _contacts; // Future proofing
     private List<Message> _messages;
-    
-	private String _id = null;
-	private boolean _isStarred = false;
-	private boolean _isSpam = false;
-	private boolean _isRead = false;
-	private boolean _isNew = false;
-    
+
+    private String _id = null;
+    private boolean _isStarred = false;
+    private boolean _isSpam = false;
+    private boolean _isRead = false;
+    private boolean _isNew = false;
+
 	/**
      * Deletes a conversation
      *
