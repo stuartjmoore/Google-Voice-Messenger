@@ -170,7 +170,7 @@ public class Message
 
         private final int _gvValue;   
 
-        TYPES(int val)
+        MESSAGETYPE(int val)
         {
             this._gvValue = val;
         }
