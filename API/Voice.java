@@ -27,7 +27,7 @@ public class Voice
     {
     }
     
-	/**
+    /**
      * Log the user in
      *
      * @return	Whether the login request was successful
@@ -103,8 +103,21 @@ public class Conversation
     private boolean _isSpam = false;
     private boolean _isRead = false;
     private boolean _isNew = false;
+    
+    public boolean isStarred() { return _isStarred; }
+    public boolean isSpam() { return _isSpam; }
+    public boolean isRead() { return _isRead; }
+    public boolean isNew() { return _isNew; }
+    
+    /**
+     * Creates a new conversation from a Google Voice JSON response object
+     */
+    public Conversation(JSONObject gvJSON)
+    {
+    	
+    }
 
-	/**
+    /**
      * Deletes a conversation
      *
      * @param	msg	Item to be deleted
@@ -114,7 +127,7 @@ public class Conversation
     {
     }
 	
-	/**
+    /**
      * Restores an item from trash
      *
      * @param	msg	Item to be restored
@@ -124,7 +137,7 @@ public class Conversation
     {
     }
 	
-	/**
+    /**
      * Stars or un-stars an item
      *
      * @param	msg	Item to be starred/un-starred
@@ -134,7 +147,7 @@ public class Conversation
     {
     }
 	
-	/**
+    /**
      * Marks or un-marks as spam
      *
      * @param	msg	Item to be marked spam/not spam
@@ -186,6 +199,20 @@ public class Message
     private String _text = null;
     private MESSAGETYPE _type = new MESSAGETYPE.NOTINIT;
     private String _id = null;
+    
+    public Person from() { return _from; }
+    public Date date() { return _date; }
+    public String text() { return _text; }
+    public MESSAGETYPE type() { return _type; }
+    public String id() { return _id; }
+    
+    /**
+     * Creates a new message from a Google Voice JSON response object
+     */
+    public Message(JSON gvJSON)
+    {
+    	
+    }
     
     public boolean send()
     {
