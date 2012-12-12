@@ -162,10 +162,29 @@ public class Conversation
  */
 public class Message
 {
+    public enum MESSAGETYPE
+    {
+    	NOTINIT (0),
+        SENT (11), // 10 : recieved, 11 : sent (from GV)
+        RECEIVED (10);
+
+        private final int _gvValue;   
+
+        TYPES(int val)
+        {
+            this._gvValue = val;
+        }
+
+        public int value()
+        { 
+            return _gvValue; 
+        }
+    }
+    
     private Person _from = null;
     private Date _date = null;
     private String _text = null;
-    private int _type = 0; // 10 : recieved, 11 : sent (from GV)
+    private MESSAGETYPE _type = new MESSAGETYPE.NOTINIT;
     private String _id = null;
     
     public boolean send()
