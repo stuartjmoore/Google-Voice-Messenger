@@ -38,25 +38,72 @@ public class Voice
     public boolean login()
     {
     }
+    
+    private List<Conversation> getConversations(JSONObject gvJSON)
+    {
+        JSONArray tmpConversations = null;
+        List<Conversation> ret = new List<Conversation>();
+        Conversation tmpConvo = null;
+        
+        tmpConversations = gvJSON.getJSONArray( "conversation" );
+        
+        for ( int i = 0; i < tmpConversations.length(); i++ ) {
+            tmpConvo = new Conversation( tmpConversations.getJSONObject(i) );
+            ret.add(tmpConvo);
+        }
+        
+        return ret;
+    }
 
     public List<Conversation> getInbox()
     {
+        JSONObject gvJSON = null;
+        
+        //TODO:
+        //gvJSON = execute(..)
+        
+        return getConversations( gvJSON );
+        
     }
 
     public List<Conversation> getStarred()
     {
+        JSONObject gvJSON = null;
+        
+        //TODO:
+        //gvJSON = execute(..)
+        
+        return getConversations( gvJSON );
     }
 
     public List<Conversation> getText()
     {
+        JSONObject gvJSON = null;
+        
+        //TODO:
+        //gvJSON = execute(..)
+        
+        return getConversations( gvJSON );
     }
 
     public List<Conversation> getTrash()
     {
+        JSONObject gvJSON = null;
+        
+        //TODO:
+        //gvJSON = execute(..)
+        
+        return getConversations( gvJSON );
     }
 
     public List<Conversation> getSpam()
     {
+        JSONObject gvJSON = null;
+        
+        //TODO:
+        //gvJSON = execute(..)
+        
+        return getConversations( gvJSON );
     }
 
     /**
@@ -64,6 +111,12 @@ public class Voice
      */
     public List<Conversation> getHistory()
     {
+        JSONObject gvJSON = null;
+        
+        //TODO:
+        //gvJSON = execute(..)
+        
+        return getConversations( gvJSON );
     }
 
     public List<Conversation> getRecordedCalls()
