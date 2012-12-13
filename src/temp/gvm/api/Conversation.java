@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class Conversation
 {
     private List<Person> _contacts; // Future proofing
-    private List<Message> _messages;
+    private HashMap<String, Message> _messages;
 
     private String _id = null;
     private boolean _isStarred = false;
@@ -48,12 +48,20 @@ public class Conversation
      * Creates a new conversation from a Google Voice JSON response object
      */
     public Conversation(JSONObject gvJSON) {
-        _id = gvJSON.getString("id");
-        _isRead = gvJSON.getBoolean("read");
+        _id = gvJSON.getString( "id" );
+        _isRead = gvJSON.getBoolean( "read" );
         
         // loop conversation.phone_call[]
         // if _messages does not contain id, create new
         // with the dictionary and add to _messages
+        _messages = new HashMap();
+        JSONArray msgs = gvJSON.getJSONArray( "phone_call" );
+        Message tmpMessage = null;
+        for ( int i = 0; i < msgs.length(); i++ ) {
+            tmpMessage = new Message(msgs.getJSONObject(i));
+            if(!_messages.containsKey(tmpMessage.id))
+                _message.add(msgs.getJSONObject(i));
+        }
     }
 
     /**
