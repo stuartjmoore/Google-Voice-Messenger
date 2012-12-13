@@ -57,10 +57,12 @@ public class Message
     public Message(JSON gvJSON)
     {	
     	//s tart_time is a number, but it's too large to be seconds
+        Long epoch = gvJSON.getLong( "start_time" );
         
-        _id = gvJSON.getString("id");
-        _text = gvJSON.getString("message_text");
-    	_type = MESSAGETYPE.fromGVCode(gvJSON.getInt("type"));
+        _id = gvJSON.getString( "id" );
+        _text = gvJSON.getString( "message_text" );
+    	_type = MESSAGETYPE.fromGVCode( gvJSON.getInt( "type" ) );
+        _date = new Date( epoch )
     	
     	gvJSON.remove(_id);
     }
