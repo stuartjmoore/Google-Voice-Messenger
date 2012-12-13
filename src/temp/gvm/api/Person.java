@@ -15,7 +15,7 @@ public class Person
 
         private final int _gvValue;   
 
-        MESSAGETYPE(int val)
+        PHONETYPE(int val)
         {
             this._gvValue = val;
         }
@@ -25,13 +25,14 @@ public class Person
             return _gvValue; 
         }
         
-        public static MESSAGETYPE fromGVCode(int gv)
+        public static PHONETYPE fromGVCode(int gv)
         {
             if( gv == MOBILE.value() ) return MOBILE;
             
             return NOTINIT;
         }
     }
+    
     private String _lookupKey = null; // Key to connect GV contact to device
                                       // list
 
