@@ -13,8 +13,9 @@ public class Message
 {
     public enum MESSAGETYPE
     {
+        // From Google Voice
     	NOTINIT (0),
-        SENT (11), // 10 : recieved, 11 : sent (from GV)
+        SENT (11), 
         RECEIVED (10);
 
         private final int _gvValue;   
@@ -43,42 +44,23 @@ public class Message
     private String _text = null;
     private MESSAGETYPE _type = new MESSAGETYPE.NOTINIT;
     private String _id = null;
-    private boolean _isRead = false;
-    private boolean _isSpam = false;
-    private boolean _isTrash = false;
-    private boolean _isStarred = false;
     
     public Person from() { return _from; }
     public Date date() { return _date; }
     public String text() { return _text; }
     public MESSAGETYPE type() { return _type; }
     public String id() { return _id; }
-    public boolean isRead() { return _isRead; }
-    public boolean isSpam() { return _isSpam; }
-    public boolean isTrash() { return _isTrash; }
-    public boolean isStarred() { return _isStarred; }
     
     /**
      * Creates a new message from a Google Voice JSON response object
      */
     public Message(JSON gvJSON)
-    {
-    	String[] keys = gvJSON.getNames(); //First is ID
-    	JSONObject msgJSON = null;
-    	
-    	if( keys.length == 0 ) throw new UnsupportedOperationException();
-    	_id = keys[0];
-    	
-    	msgJSON = gvJSON.getJSONObject(_id);
-    	
-    	//Hopefully GV doesn't change their date format.
-    	_date = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH).parse(msgJSON.getString();
-    	_text = msgJSON.getString("messageText");
-    	_type = MESSAGETYPE.fromGVCode(msgJSON.getInt("type"));
-    	_isRead = msgJSON.getBoolean("isRead");
-    	_isSpam = msgJSON.getBoolean("isSpam");
-    	_isTrash = msgJSON.getBoolean("isTrash");
-    	_isStarred = msgJSON.getBoolean("star");
+    {	
+    	//s tart_time is a number, but it's too large to be seconds
+        
+        _id = gvJSON.getString("id");
+        _text = gvJSON.getString("message_text");
+    	_type = MESSAGETYPE.fromGVCode(gvJSON.getInt("type"));
     	
     	gvJSON.remove(_id);
     }
