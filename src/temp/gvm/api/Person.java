@@ -7,6 +7,31 @@ package temp.gvm.api;
  */
 public class Person
 {
+    public enum PHONETYPE
+    {
+        // From Google Voice
+        NOTINIT (0),
+        MOBILE (7);
+
+        private final int _gvValue;   
+
+        MESSAGETYPE(int val)
+        {
+            this._gvValue = val;
+        }
+
+        public int value()
+        { 
+            return _gvValue; 
+        }
+        
+        public static MESSAGETYPE fromGVCode(int gv)
+        {
+            if( gv == MOBILE.value() ) return MOBILE;
+            
+            return NOTINIT;
+        }
+    }
     private String _lookupKey = null; // Key to connect GV contact to device
                                       // list
 
@@ -18,7 +43,7 @@ public class Person
 
     private String _phoneNumber = null;
     private String _phoneNumberDisplay = null;
-    private int _phoneType = 0; // 7 : mobile (from GV)
+    private PHONETYPE _phoneType = PHONETYPE.NOTINIT; // 7 : mobile (from GV)
 
     private String _photoURI = null; // Local device photo
     private String _photoThumbnailURI = null; // Local device photo
