@@ -39,11 +39,21 @@ public class Conversation
         return _isNew;
     }
 
+    public Date date()
+    {
+        // Get oldest message, return date
+    }
+
     /**
      * Creates a new conversation from a Google Voice JSON response object
      */
     public Conversation(JSONObject gvJSON) {
-
+        _id = gvJSON.getString("id");
+        _isRead = gvJSON.getBoolean("read");
+        
+        // loop conversation.phone_call[]
+        // if _messages does not contain id, create new
+        // with the dictionary and add to _messages
     }
 
     /**
