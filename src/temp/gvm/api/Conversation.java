@@ -59,7 +59,7 @@ public class Conversation
         Message tmpMessage = null;
         for ( int i = 0; i < msgs.length(); i++ ) {
             tmpMessage = new Message(msgs.getJSONObject(i));
-            if(!_messages.containsKey(tmpMessage.id))
+            if(!_messages.containsKey(tmpMessage.id()))
                 _message.add(msgs.getJSONObject(i));
         }
     }
