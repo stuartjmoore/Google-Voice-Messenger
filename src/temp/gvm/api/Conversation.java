@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -50,8 +51,10 @@ public class Conversation
 
     /**
      * Creates a new conversation from a Google Voice JSON response object
+     * 
+     * @throws JSONException
      */
-    public Conversation(JSONObject gvJSON)
+    public Conversation(JSONObject gvJSON) throws JSONException
     {
         _id = gvJSON.getString("id");
         _isRead = gvJSON.getBoolean("read");
@@ -59,13 +62,13 @@ public class Conversation
         // loop conversation.phone_call[]
         // if _messages does not contain id, create new
         // with the dictionary and add to _messages
-        _messages = new HashMap();
+        _messages = new HashMap<String, Message>();
         JSONArray msgs = gvJSON.getJSONArray("phone_call");
         Message tmpMessage = null;
         for (int i = 0; i < msgs.length(); i++) {
             tmpMessage = new Message(msgs.getJSONObject(i));
             if (!_messages.containsKey(tmpMessage.id()))
-                _messages.add(tmpMessage.id(), tmpMessage);
+                _messages.put(tmpMessage.id(), tmpMessage);
         }
     }
 

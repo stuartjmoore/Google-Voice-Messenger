@@ -1,8 +1,10 @@
 package temp.gvm.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.*;
@@ -47,13 +49,23 @@ public class Voice
     private List<Conversation> getConversations(JSONObject gvJSON)
     {
         JSONArray tmpConversations = null;
-        List<Conversation> ret = new List<Conversation>();
+        List<Conversation> ret = new ArrayList<Conversation>();
         Conversation tmpConvo = null;
 
-        tmpConversations = gvJSON.getJSONArray("conversation");
+        try {
+            tmpConversations = gvJSON.getJSONArray("conversation");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
 
         for (int i = 0; i < tmpConversations.length(); i++) {
-            tmpConvo = new Conversation(tmpConversations.getJSONObject(i));
+            try {
+                tmpConvo = new Conversation(tmpConversations.getJSONObject(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
             ret.add(tmpConvo);
         }
 
