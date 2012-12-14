@@ -2,6 +2,7 @@ package temp.gvm.api;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.util.*;
@@ -21,13 +22,16 @@ public class Voice
 
     // Needed: Tokens
 
-    public Voice() {
+    public Voice()
+    {
     }
 
-    public Voice(String username, String password) {
+    public Voice(String username, String password)
+    {
     }
 
-    public Voice(String username, String password, String phonenumber) {
+    public Voice(String username, String password, String phonenumber)
+    {
     }
 
     /**
@@ -37,73 +41,74 @@ public class Voice
      */
     public boolean login()
     {
+        return false;
     }
-    
+
     private List<Conversation> getConversations(JSONObject gvJSON)
     {
         JSONArray tmpConversations = null;
         List<Conversation> ret = new List<Conversation>();
         Conversation tmpConvo = null;
-        
-        tmpConversations = gvJSON.getJSONArray( "conversation" );
-        
-        for ( int i = 0; i < tmpConversations.length(); i++ ) {
-            tmpConvo = new Conversation( tmpConversations.getJSONObject(i) );
+
+        tmpConversations = gvJSON.getJSONArray("conversation");
+
+        for (int i = 0; i < tmpConversations.length(); i++) {
+            tmpConvo = new Conversation(tmpConversations.getJSONObject(i));
             ret.add(tmpConvo);
         }
-        
+
         return ret;
     }
 
     public List<Conversation> getInbox()
     {
         JSONObject gvJSON = null;
-        
-        //TODO:
-        //gvJSON = execute(..)
-        
-        return getConversations( gvJSON );
-        
+
+        // TODO:
+        // gvJSON = execute(..)
+
+        return getConversations(gvJSON);
+
     }
 
     public List<Conversation> getStarred()
     {
         JSONObject gvJSON = null;
-        
-        //TODO:
-        //gvJSON = execute(..)
-        
-        return getConversations( gvJSON );
+
+        // TODO:
+        // gvJSON = execute(..)
+
+        return getConversations(gvJSON);
     }
 
     public List<Conversation> getText()
     {
         JSONObject gvJSON = null;
-        
-        //TODO:
-        //gvJSON = execute(..)
-        
-        return getConversations( gvJSON );
+
+        // TODO:
+        // gvJSON = execute(..)
+
+        return getConversations(gvJSON);
     }
 
     public List<Conversation> getTrash()
     {
         JSONObject gvJSON = null;
-        
-        //TODO:
-        //gvJSON = execute(..)
-        
-        return getConversations( gvJSON );
+
+        // TODO:
+        // gvJSON = execute(..)
+
+        return getConversations(gvJSON);
     }
 
     public List<Conversation> getSpam()
     {
         JSONObject gvJSON = null;
-        
-        //TODO:
-        //gvJSON = execute(..)
-        
-        return getConversations( gvJSON );
+
+        // TODO:
+        // gvJSON = execute(..)
+
+        return getConversations(gvJSON);
     }
 
     /**
@@ -112,40 +117,47 @@ public class Voice
     public List<Conversation> getHistory()
     {
         JSONObject gvJSON = null;
-        
-        //TODO:
-        //gvJSON = execute(..)
-        
-        return getConversations( gvJSON );
+
+        // TODO:
+        // gvJSON = execute(..)
+
+        return getConversations(gvJSON);
     }
 
     public List<Conversation> getRecordedCalls()
     {
+        return null;
     }
 
     public List<Conversation> getPlacedCalls()
     {
+        return null;
     }
 
     public List<Conversation> getReceivedCalls()
     {
+        return null;
     }
 
     public List<Conversation> getMissedCalls()
     {
+        return null;
     }
 
     public List<Conversation> search(String query)
     {
+        return null;
     }
 
     public List<Conversation> getConversationsFrom(Person person)
     {
+        return null;
         // search(person.phoneNumber);
         // remove conversations not from person
     }
 
     private JSONObject execute(String command)
     {
+        return null;
     }
 }

@@ -1,7 +1,10 @@
 package temp.gvm.api;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -42,24 +45,26 @@ public class Conversation
     public Date date()
     {
         // Get oldest message, return date
+        return null;
     }
 
     /**
      * Creates a new conversation from a Google Voice JSON response object
      */
-    public Conversation(JSONObject gvJSON) {
-        _id = gvJSON.getString( "id" );
-        _isRead = gvJSON.getBoolean( "read" );
-        
+    public Conversation(JSONObject gvJSON)
+    {
+        _id = gvJSON.getString("id");
+        _isRead = gvJSON.getBoolean("read");
+
         // loop conversation.phone_call[]
         // if _messages does not contain id, create new
         // with the dictionary and add to _messages
         _messages = new HashMap();
-        JSONArray msgs = gvJSON.getJSONArray( "phone_call" );
+        JSONArray msgs = gvJSON.getJSONArray("phone_call");
         Message tmpMessage = null;
-        for ( int i = 0; i < msgs.length(); i++ ) {
+        for (int i = 0; i < msgs.length(); i++) {
             tmpMessage = new Message(msgs.getJSONObject(i));
-            if(!_messages.containsKey(tmpMessage.id()))
+            if (!_messages.containsKey(tmpMessage.id()))
                 _messages.add(tmpMessage.id(), tmpMessage);
         }
     }

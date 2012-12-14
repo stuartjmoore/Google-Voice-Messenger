@@ -10,10 +10,9 @@ public class Person
     public enum PHONETYPE
     {
         // From Google Voice
-        NOTINIT (0),
-        MOBILE (7);
+        NOTINIT(0), MOBILE(7);
 
-        private final int _gvValue;   
+        private final int _gvValue;
 
         PHONETYPE(int val)
         {
@@ -21,18 +20,19 @@ public class Person
         }
 
         public int value()
-        { 
-            return _gvValue; 
+        {
+            return _gvValue;
         }
-        
+
         public static PHONETYPE fromGVCode(int gv)
         {
-            if( gv == MOBILE.value() ) return MOBILE;
-            
+            if (gv == MOBILE.value())
+                return MOBILE;
+
             return NOTINIT;
         }
     }
-    
+
     private String _lookupKey = null; // Key to connect GV contact to device
                                       // list
 
