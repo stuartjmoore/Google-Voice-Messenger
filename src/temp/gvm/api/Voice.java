@@ -7,10 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.*;
-import android.net.http.AndroidHttpClient;
-import android.provider.ContactsContract;
-
 /**
  * Main access point to the Google Voice servers
  * 
