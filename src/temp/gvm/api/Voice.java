@@ -1,5 +1,9 @@
 package temp.gvm.api;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,32 +18,17 @@ import org.json.JSONObject;
  */
 public class Voice
 {
-    private String _username = null;
-    private String _password = null;
+    private String _token = null;
     private String _phoneNumber = null;
 
-    // Needed: Tokens
-
-    public Voice()
+    public Voice(String token)
     {
+        this.setToken(token);
     }
 
-    public Voice(String username, String password)
+    public void setToken(String token)
     {
-    }
-
-    public Voice(String username, String password, String phonenumber)
-    {
-    }
-
-    /**
-     * Log the user in
-     * 
-     * @return Whether the login request was successful
-     */
-    public boolean login()
-    {
-        return false;
+        this._token = token;
     }
 
     private List<Conversation> getConversations(JSONObject gvJSON)
@@ -166,6 +155,31 @@ public class Voice
 
     private JSONObject execute(String command)
     {
-        return null;
+        try {
+            URL url;
+            url = new URL(command);
+            URLConnection conn = url.openConnection();
+            // This is how we authenticate without needing Username & Password.  Token is provided by the App.
+            conn.setRequestProperty("Authorization", "GoogleLogin auth=" + this._token);
+            // User agent is required for getting the mobile pages, which is what most API calls pull data from.
+            conn.setRequestProperty("User-agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.A.B.C Safari/525.13");
+
+            // Get the response
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuffer sb = new StringBuffer();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line + "\n\r");
+            }
+            rd.close();
+            String res = sb.toString();
+            
+            // TODO Find and return the content that needs to be returned
+            return null;
+        } catch (Exception e) {
+            // TODO Error Handling
+            e.printStackTrace();
+            return null;
+        }
     }
 }
