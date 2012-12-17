@@ -3,6 +3,7 @@ package temp.gvm;
 import temp.gvm.api.Voice;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -30,9 +31,13 @@ public class MainActivity extends Activity
             // TODO check for an already selected account.
             // this.doLogin(accountName);
         } else {
-            // Choose a google account that has Google Voice.
-            Intent accountIntent = AccountPicker.newChooseAccountIntent(null, null, new String[] { "com.google" }, false, null, "grandcentral", new String[] { "service_grandcentral" }, null);
-            this.startActivityForResult(accountIntent, MainActivity.REQUEST_ACCOUNT);
+            try {
+				// Choose a google account that has Google Voice.
+				Intent accountIntent = AccountPicker.newChooseAccountIntent(null, null, new String[] { "com.google" }, false, null, "grandcentral", new String[] { "service_grandcentral" }, null);
+				this.startActivityForResult(accountIntent, MainActivity.REQUEST_ACCOUNT);
+			} catch (Exception e) {
+				// TODO No account support
+			}
         }
     }
 
