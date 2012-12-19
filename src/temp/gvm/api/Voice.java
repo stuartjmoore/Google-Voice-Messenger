@@ -18,6 +18,23 @@ import org.json.JSONObject;
  */
 public class Voice
 {
+	/**
+	 * Starting token to identify JSON portion of XML>JSON+HTML response
+	 */
+	public static final String JSONResponse_Start = "<json><![CDATA[";
+	/**
+	 * Ending token to identify end of JSON portion of XML>JSON+HTML response
+	 */
+	public static final String JSONResponse_End = "]]<json>";
+	/**
+	 * Starting token to identify HTML portion of XML>JSON+HTML response
+	 */
+	public static final String HTMLResponse_Start = "<html><![CDATA[";
+	/**
+	 * Ending token to identify end of HTML portion of XML>JSON+HTML response
+	 */
+	public static final String HTMLResponse_End = "]]<html>";
+	
     private String _token = null;
     private String _phoneNumber = null;
 

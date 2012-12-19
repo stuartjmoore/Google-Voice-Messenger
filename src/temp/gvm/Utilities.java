@@ -27,11 +27,30 @@ public final class Utilities
 		return ret;
 	}
 	
+	/**
+	 * Pulls the text between the <code>startToken</code> and the <code>endToken</code>
+	 * 
+	 * @param text	Text to search
+	 * @param startToken	Identifier for start of selection
+	 * @param endToken	Identifier for end of selection
+	 * @return	<code>null</code> if not found
+	 */
 	public static final String getSubstring(String text, String startToken, String endToken)
 	{
 		return getSubstring(text, startToken, endToken, false, false, false);
 	}
 	
+	/**
+	 * Pulls the text between the <code>startToken</code> and the <code>endToken</code>
+	 * 
+	 * @param text	Text to search
+	 * @param startToken	Identifier for start of selection
+	 * @param endToken	Identifier for end of selection
+	 * @param includeNewLines	Whether to include newline characters in our selection
+	 * @param gotoEnd	Whether to go to the end of the string if <code>endToken</code> cannot be found
+	 * @param includeTokens	Whether to return the <code>startToken</code> and <code>endToken</code> in the returned output
+	 * @return <code>null</code> if not foud
+	 */
 	public static final String getSubstring(String text, String startToken, String endToken, boolean includeNewLines, boolean gotoEnd, boolean includeTokens)
 	{
 		String rgxStartToken = escapeForRegEx(startToken, true);
