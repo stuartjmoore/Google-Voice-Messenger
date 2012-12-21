@@ -1,12 +1,16 @@
 package temp.gvm.api;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.nodes.Element;
 
 import android.net.Uri;
 //import android.net.URL; //Why is this not working? http://developer.android.com/reference/java/net/URL.html
+import android.util.Log;
 
 /**
  * A contact
@@ -15,6 +19,20 @@ import android.net.Uri;
  */
 public class Person
 {
+    private final class XPathQuery
+    {
+        public static final String Name = "descendant::a[contains(@class,gc-under')]";
+        public static final String Id = "/*/*/div[@id]";
+        public static final String PhoneNumber = "descendant:span[@class='gc-message-type']";
+        public static final String PortraitURL = "descendant::div[@class='gc-message-portrait']";
+    }
+    
+    private final class JSONKeys
+    {
+        public static final String PhoneNumber = "phoneNumber";
+        public static final String PhoneNumberDisplay = "displayNumber";
+    }
+    
     public enum PHONETYPE
     {
         // From Google Voice
@@ -48,6 +66,34 @@ public class Person
     {
         throw new UnsupportedOperationException("Method Not Implemented");
     }
+    
+    /**
+     * Parses a person from HTML data
+     * @param htmlNode
+     */
+    public Person(Element htmlNode)
+    {
+        _nameOnServer = htmlNode.select(XPathQuery.Name).first().data();
+        _id = htmlNode.select(XPathQuery.Id).first().data();
+        try {
+            _photoURL = new URL(htmlNode.select(XPathQuery.PortraitURL).first().data());
+        } catch (MalformedURLException e) {
+            Log.e(this.getClass().getName(), e.getMessage(), e);
+            _photoURL = null;
+        }
+        
+        Element phoneNumElement = htmlNode.select(XPathQuery.PhoneNumber).first();
+        if(phoneNumElement != null) {
+            _phoneNumberDisplay = phoneNumElement.data();
+            _phoneNumber = getRawPhoneNumber(_phoneNumberDisplay);
+        }
+    }
+    
+    public Person(JSONObject jsonPerson) throws JSONException
+    {
+        _phoneNumber = jsonPerson.getString(JSONKeys.PhoneNumber);
+        _phoneNumberDisplay = jsonPerson.getString(JSONKeys.PhoneNumberDisplay);
+    }
 
     private String _id = null; //GV object ID
     private String _lookupKey = null; // Key to connect GV contact to device
@@ -65,7 +111,13 @@ public class Person
 
     private Uri _photoURI = null; // Local device photo
     private Uri _photoThumbnailURI = null; // Local device photo
-    private URL _photoURL = null; // Server GV photo TODO: make URL object
+    private URL _photoURL = null; // Server GV photo
+    
+    private String getRawPhoneNumber(String formattedNumber)
+    {
+        //Regex replace comma, parens, plus and space
+        return formattedNumber.replaceAll("[,\\(\\)\\+ ]", "");
+    }
     
     
     /**

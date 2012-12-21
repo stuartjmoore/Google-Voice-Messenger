@@ -3,12 +3,20 @@ package temp.gvm.api;
 import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.nodes.Element;
 
 /**
  * A single message
  */
 public class Message
 {
+    private class XPathQuery
+    {
+        public static final String Text = "descendant::span[@class='gc-message-sms-text']";
+        public static final String Time = "descendant::span[@class='gc-message-sms-time']";
+        public static final String From = "descendant::span[@class='gc-message-sms-from']";
+    }
+    
     public enum MESSAGETYPE
     {
         // From Google Voice
@@ -74,7 +82,6 @@ public class Message
      */
     public Message(JSONObject gvJSON) throws JSONException
     {
-        // s tart_time is a number, but it's too large to be seconds
         Long epoch = gvJSON.getLong("start_time");
 
         _id = gvJSON.getString("id");
@@ -83,6 +90,21 @@ public class Message
         _date = new Date(epoch);
 
         gvJSON.remove(_id);
+    }
+    
+    public Message(Element htmlNode, Person contact)
+    {
+        _text = htmlNode.select(XPathQuery.Text).first().data();
+        String from = htmlNode.select(XPathQuery.From).first().data().replaceAll(":", "");
+        if(from.toUpperCase() == "ME") {
+            _from = null; //TODO: we need a 'Me' contact
+            _type = MESSAGETYPE.SENT;
+        } else {
+            _from = contact;
+            _type = MESSAGETYPE.RECEIVED;
+        }
+        String time = htmlNode.select(XPathQuery.Time).first().data(); //This comes in as "relative time"
+        //TODO: Convert time to a full datetime
     }
 
     public boolean send()

@@ -1,5 +1,6 @@
 package temp.gvm.api;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,14 +9,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.jsoup.nodes.Element;
+
 /**
  * A conversation is a grouping of back-and-forth messages Google Voice groups
  * them for us
  */
 public class Conversation
 {
-    private List<Person> _contacts; // Future proofing
-    private HashMap<String, Message> _messages;
+    private class JSONKeys
+    {
+        
+    }
+    
+    private class XPathQuery
+    {
+        
+    }
+    
+    private ArrayList<Person> _contacts = null; // Future proofing
+    private HashMap<String, Message> _messages = null;
 
     private String _id = null;
     private boolean _isStarred = false;
@@ -48,6 +61,11 @@ public class Conversation
         // Get oldest message, return date
         return null;
     }
+    
+    public String id()
+    {
+        return _id;
+    }
 
     /**
      * Creates a new conversation from a Google Voice JSON response object
@@ -59,16 +77,28 @@ public class Conversation
         _id = gvJSON.getString("id");
         _isRead = gvJSON.getBoolean("read");
 
-        // loop conversation.phone_call[]
-        // if _messages does not contain id, create new
-        // with the dictionary and add to _messages
+        _contacts = new ArrayList<Person>();
+        _contacts.add(new Person(gvJSON));
+        
+        //Get messages for this conversation
         _messages = new HashMap<String, Message>();
-        JSONArray msgs = gvJSON.getJSONArray("phone_call");
+        JSONArray msgs = gvJSON.getJSONArray("children");
         Message tmpMessage = null;
         for (int i = 0; i < msgs.length(); i++) {
             tmpMessage = new Message(msgs.getJSONObject(i));
             if (!_messages.containsKey(tmpMessage.id()))
                 _messages.put(tmpMessage.id(), tmpMessage);
+        }
+    }
+    
+    public Conversation(Element htmlNode, Person contact)
+    {
+        //TODO: Iterate through htmlNode for each message
+        _messages = new HashMap<String, Message>();
+        List<Element> nodes = htmlNode.getAllElements();
+        
+        for(Element node : nodes) {
+            
         }
     }
 
