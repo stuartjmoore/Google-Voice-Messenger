@@ -1,9 +1,13 @@
 package temp.gvm.api;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
+
+import android.util.Log;
 
 /**
  * A single message
@@ -103,8 +107,12 @@ public class Message
             _from = contact;
             _type = MESSAGETYPE.RECEIVED;
         }
-        String time = htmlNode.select(XPathQuery.Time).first().data(); //This comes in as "relative time"
-        //TODO: Convert time to a full datetime
+        SimpleDateFormat time = new SimpleDateFormat("MM/dd/yy h:m a");
+        try {
+            _date = time.parse(htmlNode.select(XPathQuery.Time).first().data());
+        } catch (ParseException e) {
+            Log.e(this.getClass().getName(), e.getMessage(), e);
+        }
     }
 
     public boolean send()

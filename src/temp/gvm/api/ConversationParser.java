@@ -29,14 +29,12 @@ public class ConversationParser extends AsyncTask<String, Void, HashMap<String, 
        
         Document respDoc = Jsoup.parse(htmlResponse);
         List<Element> nodes = respDoc.getAllElements();
-        Person currPerson = null;
         Conversation currConvo = null;
         
         for(Element htmlNode : nodes) {
             if(htmlNode == null) continue;
             
-            currPerson = new Person(htmlNode);
-            currConvo = new Conversation(htmlNode, currPerson);
+            currConvo = new Conversation(htmlNode);
             
             ret.put(currConvo.id(), currConvo);
         }

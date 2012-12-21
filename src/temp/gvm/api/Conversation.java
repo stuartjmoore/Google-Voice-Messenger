@@ -91,14 +91,18 @@ public class Conversation
         }
     }
     
-    public Conversation(Element htmlNode, Person contact)
+    public Conversation(Element htmlNode)
     {
-        //TODO: Iterate through htmlNode for each message
         _messages = new HashMap<String, Message>();
+        Message currMessage = null;
         List<Element> nodes = htmlNode.getAllElements();
         
+        _contacts = new ArrayList<Person>();
+        _contacts.add(new Person(htmlNode));
+        
         for(Element node : nodes) {
-            
+            currMessage = new Message(node, _contacts.get(0));
+            _messages.put(currMessage.id(), currMessage);
         }
     }
 
