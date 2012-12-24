@@ -32,12 +32,12 @@ public class MainActivity extends Activity
             // this.doLogin(accountName);
         } else {
             try {
-				// Choose a google account that has Google Voice.
-				Intent accountIntent = AccountPicker.newChooseAccountIntent(null, null, new String[] { "com.google" }, false, null, "grandcentral", new String[] { "service_grandcentral" }, null);
-				this.startActivityForResult(accountIntent, MainActivity.REQUEST_ACCOUNT);
-			} catch (Exception e) {
-				// TODO No account support
-			}
+                // Choose a google account that has Google Voice.
+                Intent accountIntent = AccountPicker.newChooseAccountIntent(null, null, new String[] { "com.google" }, false, null, "grandcentral", new String[] { "service_grandcentral" }, null);
+                this.startActivityForResult(accountIntent, MainActivity.REQUEST_ACCOUNT);
+            } catch (Exception e) {
+                // TODO No account support
+            }
         }
     }
 
