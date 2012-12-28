@@ -21,6 +21,14 @@ public class Message
         public static final String From = "descendant::span[@class='gc-message-sms-from']";
     }
     
+    private class JSONKeys
+    {
+        public static final String Id = "id";
+        public static final String Text = "messageText";
+        public static final String Type = "type";
+        public static final String StartTime = "startTime";
+    }
+    
     public enum MESSAGETYPE
     {
         // From Google Voice
@@ -86,11 +94,11 @@ public class Message
      */
     public Message(JSONObject gvJSON) throws JSONException
     {
-        Long epoch = gvJSON.getLong("start_time");
+        Long epoch = gvJSON.getLong(JSONKeys.StartTime);
 
-        _id = gvJSON.getString("id");
-        _text = gvJSON.getString("message_text");
-        _type = MESSAGETYPE.fromGVCode(gvJSON.getInt("type"));
+        _id = gvJSON.getString(JSONKeys.Id);
+        _text = gvJSON.getString(JSONKeys.Text);
+        _type = MESSAGETYPE.fromGVCode(gvJSON.getInt(JSONKeys.Type));
         _date = new Date(epoch);
 
         gvJSON.remove(_id);
