@@ -16,9 +16,9 @@ public class Message
 {
     private class XPathQuery
     {
-        public static final String Text = "descendant::span[@class='gc-message-sms-text']";
-        public static final String Time = "descendant::span[@class='gc-message-sms-time']";
-        public static final String From = "descendant::span[@class='gc-message-sms-from']";
+        public static final String Text = "span.gc-message-sms-text";
+        public static final String Time = "span.gc-message-sms-time";
+        public static final String From = "span.gc-message-sms-from";
     }
     
     private class JSONKeys
@@ -106,6 +106,7 @@ public class Message
     
     public Message(Element htmlNode, Person contact)
     {
+        System.out.print(htmlNode.select(XPathQuery.Text).first().ownText());
         _text = htmlNode.select(XPathQuery.Text).first().data();
         String from = htmlNode.select(XPathQuery.From).first().data().replaceAll(":", "");
         if(from.toUpperCase() == "ME") {
@@ -116,11 +117,11 @@ public class Message
             _type = MESSAGETYPE.RECEIVED;
         }
         SimpleDateFormat time = new SimpleDateFormat("MM/dd/yy h:m a");
-        try {
+        /*try {
             _date = time.parse(htmlNode.select(XPathQuery.Time).first().data());
         } catch (ParseException e) {
             Log.e(this.getClass().getName(), e.getMessage(), e);
-        }
+        }*/
     }
 
     public boolean send()
