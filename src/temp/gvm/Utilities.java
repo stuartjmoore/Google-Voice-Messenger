@@ -13,18 +13,9 @@ public final class Utilities
 	 */
 	private static final String escapeForRegEx(String text, boolean nonCapturing)
 	{
-		String[] reservedChars = { "(", ")", "[", "]", "\\", "|", "{", "}", "?", "+", ".", "*", "$", "^" };
-		String ret = text;
+		if(nonCapturing) return "(?:" + Pattern.quote(text) + ")";
 		
-		for(String resChar : reservedChars) {
-			ret = ret.replace(resChar, "\\" + resChar);
-		}
-		
-		if(nonCapturing) {
-			ret = "(?:" + ret + ")";
-		}
-		
-		return ret;
+		return Pattern.quote(text);
 	}
 	
 	/**
@@ -60,7 +51,7 @@ public final class Utilities
 		Matcher rgxMatch = null;
 		
 		if(includeNewLines) {
-			rgxPattern = Pattern.compile(rgxStartToken + "((.|\n)*?)" + rgxEndToken);
+			rgxPattern = Pattern.compile(rgxStartToken + "(.*?)" + rgxEndToken, Pattern.DOTALL);
 		} else {
 			rgxPattern = Pattern.compile(rgxStartToken + "(.*?)" + rgxEndToken);
 		}
@@ -68,10 +59,10 @@ public final class Utilities
 		rgxMatch = rgxPattern.matcher(text);
 		if(rgxMatch.find()) {
 			//Found, start/end tokens are non-capturing so grab first group
-			ret = rgxMatch.group(0);
+			ret = rgxMatch.group(1);
 		} else if(gotoEnd) {
 			if(includeNewLines) {
-				rgxPattern = Pattern.compile(rgxStartToken + "((.|\n)*?)(?:($|\\Z))");
+				rgxPattern = Pattern.compile(rgxStartToken + "(.*?)(?:($|\\Z))", Pattern.DOTALL);
 			} else {
 				rgxPattern = Pattern.compile(rgxStartToken + "(.*?)(?:($|\\Z))");
 			}
@@ -79,7 +70,7 @@ public final class Utilities
 			rgxMatch = rgxPattern.matcher(text);
 			if(rgxMatch.find()) {
 				//Found, start/end tokens are non-capturing so grab first group
-				ret = rgxMatch.group(0);
+				ret = rgxMatch.group(1);
 			}
 		}
 		
