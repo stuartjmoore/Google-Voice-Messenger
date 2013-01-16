@@ -5,11 +5,16 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.util.Log;
+
+import temp.gvm.Utilities;
 
 /**
  * Main access point to the Google Voice servers
@@ -18,6 +23,11 @@ import org.json.JSONObject;
  */
 public class Voice
 {
+    private class LabelURLs
+    {
+        public static final String Inbox = "https://www.google.com/voice/inbox/recent/inbox/";
+    }
+    
 	/**
 	 * Starting token to identify JSON portion of XML>JSON+HTML response
 	 */
@@ -48,94 +58,106 @@ public class Voice
         this._token = token;
     }
 
-    private List<Conversation> getConversations(JSONObject gvJSON)
+    private HashMap<String, Conversation> getConversations(String gvResponse)
     {
         JSONArray tmpConversations = null;
-        List<Conversation> ret = new ArrayList<Conversation>();
+        HashMap<String, Conversation> ret = new HashMap<String, Conversation>();
         Conversation tmpConvo = null;
+        JSONObject gvJSON = null;
+        try {
+            gvJSON = new JSONObject(Utilities.getSubstring(gvResponse,
+                    JSONResponse_Start, JSONResponse_End, true, false, false));
+        } catch (JSONException ex) {
+            Log.e(this.getClass().getName(), ex.getMessage(), ex);
+        }
+        String gvHTML = Utilities.getSubstring(gvResponse, HTMLResponse_Start,
+                HTMLResponse_End, true, false, false);
+        ConversationParser bgParser = new ConversationParser(ret);
+        
+        //Start the parser
+        bgParser.execute(gvHTML);
 
         try {
             tmpConversations = gvJSON.getJSONArray("conversation");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), ex.getMessage(), ex);
             return null;
         }
 
         for (int i = 0; i < tmpConversations.length(); i++) {
             try {
                 tmpConvo = new Conversation(tmpConversations.getJSONObject(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                Log.e(this.getClass().getName(), ex.getMessage(), ex);
                 return null;
             }
-            ret.add(tmpConvo);
+            ret.put(tmpConvo.id(), tmpConvo);
         }
 
         return ret;
     }
 
-    public List<Conversation> getInbox()
+    public HashMap<String, Conversation> getInbox()
     {
-        JSONObject gvJSON = null;
+        String gvResponse = null;
 
-        // TODO:
-        // gvJSON = execute(..)
+        gvResponse = execute(LabelURLs.Inbox);
 
-        return getConversations(gvJSON);
+        return getConversations(gvResponse);
 
     }
 
-    public List<Conversation> getStarred()
+    public HashMap<String, Conversation> getStarred()
     {
-        JSONObject gvJSON = null;
+        String gvResponse = null;
 
         // TODO:
-        // gvJSON = execute(..)
+        // gvResponse = execute(..)
 
-        return getConversations(gvJSON);
+        return getConversations(gvResponse);
     }
 
-    public List<Conversation> getText()
+    public HashMap<String, Conversation> getText()
     {
-        JSONObject gvJSON = null;
+        String gvResponse = null;
 
         // TODO:
-        // gvJSON = execute(..)
+        // gvResponse = execute(..)
 
-        return getConversations(gvJSON);
+        return getConversations(gvResponse);
     }
 
-    public List<Conversation> getTrash()
+    public HashMap<String, Conversation> getTrash()
     {
-        JSONObject gvJSON = null;
+        String gvResponse = null;
 
         // TODO:
-        // gvJSON = execute(..)
+        // gvResponse = execute(..)
 
-        return getConversations(gvJSON);
+        return getConversations(gvResponse);
     }
 
-    public List<Conversation> getSpam()
+    public HashMap<String, Conversation> getSpam()
     {
-        JSONObject gvJSON = null;
+        String gvResponse = null;
 
         // TODO:
-        // gvJSON = execute(..)
+        // gvResponse = execute(..)
 
-        return getConversations(gvJSON);
+        return getConversations(gvResponse);
     }
 
     /**
      * Not for version 1.0, but it's always good to think ahead
      */
-    public List<Conversation> getHistory()
+    public HashMap<String, Conversation> getHistory()
     {
-        JSONObject gvJSON = null;
+        String gvResponse = null;
 
         // TODO:
-        // gvJSON = execute(..)
+        // gvResponse = execute(..)
 
-        return getConversations(gvJSON);
+        return getConversations(gvResponse);
     }
 
     public List<Conversation> getRecordedCalls()
@@ -170,7 +192,7 @@ public class Voice
         // remove conversations not from person
     }
 
-    private JSONObject execute(String command)
+    private String execute(String command)
     {
         try {
             URL url;
@@ -191,11 +213,9 @@ public class Voice
             rd.close();
             String res = sb.toString();
             
-            // TODO Find and return the content that needs to be returned
-            return null;
-        } catch (Exception e) {
-            // TODO Error Handling
-            e.printStackTrace();
+            return res;
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), ex.getMessage(), ex);
             return null;
         }
     }

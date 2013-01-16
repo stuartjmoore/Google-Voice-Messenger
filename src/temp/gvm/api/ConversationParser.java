@@ -1,6 +1,7 @@
 package temp.gvm.api;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -8,14 +9,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 
 public class ConversationParser extends AsyncTask<String, Void, HashMap<String, Conversation> >
 {
-
-    public ConversationParser()
+    private HashMap<String, Conversation> _convMerge = null;
+    
+    public ConversationParser(HashMap<String, Conversation> mergeMap)
     {
-        // TODO Auto-generated constructor stub
+        _convMerge = mergeMap;
     }
 
     @Override
@@ -42,4 +45,19 @@ public class ConversationParser extends AsyncTask<String, Void, HashMap<String, 
         return ret; //Once returned - we need to MERGE this with the JSON conversation based on Conversation ID
     }
 
+    protected void onPostExecute(HashMap<String, Conversation> result) 
+    {
+        Iterator<String> iConvKey = result.keySet().iterator();
+        while(iConvKey.hasNext()) {
+            String key = (String)iConvKey.next();
+            if(_convMerge.containsKey(key))
+            {
+                _convMerge.get(key).merge(result.get(key));
+            }
+            else
+            {
+                Log.w(this.getClass().getName(), "Unable to merge conversation id: " + key);
+            }
+        }
+    }
 }

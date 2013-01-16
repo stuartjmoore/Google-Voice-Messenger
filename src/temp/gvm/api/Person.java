@@ -19,12 +19,12 @@ import android.util.Log;
  */
 public class Person
 {
-    private final class XPathQuery
+    private final class HTMLQuery
     {
-        public static final String Name = "descendant::a[contains(@class,gc-under')]";
-        public static final String Id = "/*/*/div[@id]";
-        public static final String PhoneNumber = "descendant:span[@class='gc-message-type']";
-        public static final String PortraitURL = "descendant::div[@class='gc-message-portrait']";
+        public static final String Name = "a.gc-under"; //Not sure if this is right search
+        public static final String Id = "span.gc-message-contact-id";
+        public static final String PhoneNumber = "span.gc-message-type";
+        public static final String PortraitURL = "div.gc-message-portrait";
     }
     
     private final class JSONKeys
@@ -73,16 +73,16 @@ public class Person
      */
     public Person(Element htmlNode)
     {
-        _nameOnServer = htmlNode.select(XPathQuery.Name).first().data();
-        _id = htmlNode.select(XPathQuery.Id).first().data();
+        _nameOnServer = htmlNode.select(HTMLQuery.Name).first().data();
+        _id = htmlNode.select(HTMLQuery.Id).first().data();
         try {
-            _photoURL = new URL(htmlNode.select(XPathQuery.PortraitURL).first().data());
+            _photoURL = new URL(htmlNode.select(HTMLQuery.PortraitURL).first().data());
         } catch (MalformedURLException e) {
             Log.e(this.getClass().getName(), e.getMessage(), e);
             _photoURL = null;
         }
         
-        Element phoneNumElement = htmlNode.select(XPathQuery.PhoneNumber).first();
+        Element phoneNumElement = htmlNode.select(HTMLQuery.PhoneNumber).first();
         if(phoneNumElement != null) {
             _phoneNumberDisplay = phoneNumElement.data();
             _phoneNumber = getRawPhoneNumber(_phoneNumberDisplay);

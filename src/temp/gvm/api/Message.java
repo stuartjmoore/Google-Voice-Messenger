@@ -14,7 +14,7 @@ import android.util.Log;
  */
 public class Message
 {
-    private class XPathQuery
+    private class HTMLQuery
     {
         public static final String Text = "span.gc-message-sms-text";
         public static final String Time = "span.gc-message-sms-time";
@@ -106,9 +106,9 @@ public class Message
     
     public Message(Element htmlNode, Person contact)
     {
-        System.out.print(htmlNode.select(XPathQuery.Text).first().ownText());
-        _text = htmlNode.select(XPathQuery.Text).first().data();
-        String from = htmlNode.select(XPathQuery.From).first().data().replaceAll(":", "");
+        System.out.print(htmlNode.select(HTMLQuery.Text).first().ownText());
+        _text = htmlNode.select(HTMLQuery.Text).first().data();
+        String from = htmlNode.select(HTMLQuery.From).first().data().replaceAll(":", "");
         if(from.toUpperCase() == "ME") {
             _from = null; //TODO: we need a 'Me' contact
             _type = MESSAGETYPE.SENT;

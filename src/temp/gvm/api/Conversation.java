@@ -22,7 +22,7 @@ public class Conversation
         
     }
     
-    private class XPathQuery
+    private class HTMLQuery
     {
         
     }
@@ -167,5 +167,10 @@ public class Conversation
     private boolean unarchive()
     {
         return false;
+    }
+    
+    public void merge(Conversation convMerge)
+    {
+        //TODO: Merge the messages
     }
 }
