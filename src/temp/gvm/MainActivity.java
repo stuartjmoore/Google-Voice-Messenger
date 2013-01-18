@@ -4,6 +4,7 @@ import temp.gvm.api.Voice;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -16,6 +17,12 @@ public class MainActivity extends Activity
 {
     private final static int REQUEST_ACCOUNT = 1;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
