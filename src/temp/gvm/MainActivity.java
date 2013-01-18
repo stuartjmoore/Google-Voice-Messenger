@@ -5,10 +5,12 @@ import temp.gvm.api.Voice;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import com.google.android.gms.common.AccountPicker;
@@ -27,6 +29,26 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        
+        final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actionBar.setListNavigationCallbacks(
+                // Specify a SpinnerAdapter to populate the dropdown list.
+                new ArrayAdapter(
+                        actionBar.getThemedContext(),
+                        android.R.layout.simple_list_item_1,
+                        android.R.id.text1,
+                        new String[]{ "Inbox", "All Texts", "Trash" }),
+
+                // Provide a listener to be called when an item is selected.
+                new ActionBar.OnNavigationListener() {
+                    public boolean onNavigationItemSelected(int position, long id) {
+                        // Take action here, e.g. switching to the
+                        // corresponding fragment.
+                        return true;
+                    }
+                });
+        
         this.setupVoice();
     }
 
