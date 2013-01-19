@@ -8,9 +8,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
-//import android.net.URL; //Why is this not working? http://developer.android.com/reference/java/net/URL.html
 import android.util.Log;
+import android.provider.*;
+
 
 /**
  * A contact
@@ -321,5 +324,34 @@ public class Person
      * @return
      */
     public URL getPhotoURL() { return _photoURL; }
+    
+    /**
+     * Gets the URI for the contact's photo
+     * 
+     * @param context
+     * @return Uri of the contact's photo
+     */
+    public Uri getContactPhoto_Local(Context context)
+    {
+        final String[] projURI = new String[] {
+                ContactsContract.Contacts.PHOTO_URI
+        };
+        final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(_phoneNumber));
+        final Cursor cursor = context.getContentResolver().query(uri, projURI, null, null, null);
+        
+        try {
+            String ret = null;
+            if(cursor.moveToFirst()) {
+                ret = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI));
+            }
+            return Uri.parse(ret);
+        } catch(Exception ex) {
+            Log.e(this.getClass().getName(), ex.getMessage(), ex);
+            return null;
+        } finally {
+            cursor.close();
+        }
+        
+    }
     
 }
