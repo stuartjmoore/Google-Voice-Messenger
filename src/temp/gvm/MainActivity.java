@@ -56,6 +56,22 @@ public class MainActivity extends Activity
                     }
                 });
 
+
+
+        /*
+         * Temporary, just for testing without pinging Google.
+         */
+        this.setContentView(R.layout.activity_main);
+        ListView listView = (ListView) this.findViewById(R.id.message_list);
+        String[] values = new String[] { "Hello\n↳ Hello, my love <3" };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.thread_item, R.id.thread_message, values);
+        listView.setAdapter(adapter);
+        /*
+         * End Temporary
+         */
+        
+        
         this.setupVoice();
     }
 
@@ -102,7 +118,7 @@ public class MainActivity extends Activity
          * Temporary, just for now sort of thing.
          */
         ListView listView = (ListView) this.findViewById(R.id.message_list);
-        String[] values = new String[] { "Hello\n└─ Hello, my love <3" };
+        String[] values = new String[] { "Hello\n↳ Hello, my love <3" };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.thread_item, R.id.thread_message, values);
