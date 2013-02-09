@@ -27,26 +27,26 @@ public class Voice
     {
         public static final String Inbox = "https://www.google.com/voice/inbox/recent/inbox/";
     }
-    
-	/**
-	 * Starting token to identify JSON portion of XML>JSON+HTML response
-	 */
-	public static final String JSONResponse_Start = "<json><![CDATA[";
-	/**
-	 * Ending token to identify end of JSON portion of XML>JSON+HTML response
-	 */
-	public static final String JSONResponse_End = "]]></json>";
-	/**
-	 * Starting token to identify HTML portion of XML>JSON+HTML response
-	 */
-	public static final String HTMLResponse_Start = "<html><![CDATA[";
-	/**
-	 * Ending token to identify end of HTML portion of XML>JSON+HTML response
-	 */
-	public static final String HTMLResponse_End = "]]></html>";
-	
-    private String _token = null;
-    private String _phoneNumber = null;
+
+    /**
+     * Starting token to identify JSON portion of XML>JSON+HTML response
+     */
+    public static final String JSONResponse_Start = "<json><![CDATA[";
+    /**
+     * Ending token to identify end of JSON portion of XML>JSON+HTML response
+     */
+    public static final String JSONResponse_End   = "]]></json>";
+    /**
+     * Starting token to identify HTML portion of XML>JSON+HTML response
+     */
+    public static final String HTMLResponse_Start = "<html><![CDATA[";
+    /**
+     * Ending token to identify end of HTML portion of XML>JSON+HTML response
+     */
+    public static final String HTMLResponse_End   = "]]></html>";
+
+    private String             _token             = null;
+    private String             _phoneNumber       = null;
 
     public Voice(String token)
     {
@@ -73,8 +73,8 @@ public class Voice
         String gvHTML = Utilities.getSubstring(gvResponse, HTMLResponse_Start,
                 HTMLResponse_End, true, false, false);
         ConversationParser bgParser = new ConversationParser(ret);
-        
-        //Start the parser
+
+        // Start the parser
         bgParser.execute(gvHTML);
 
         try {
@@ -198,13 +198,19 @@ public class Voice
             URL url;
             url = new URL(command);
             URLConnection conn = url.openConnection();
-            // This is how we authenticate without needing Username & Password.  Token is provided by the App.
-            conn.setRequestProperty("Authorization", "GoogleLogin auth=" + this._token);
-            // User agent is required for getting the mobile pages, which is what most API calls pull data from.
-            conn.setRequestProperty("User-agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.A.B.C Safari/525.13");
+            // This is how we authenticate without needing Username & Password.
+            // Token is provided by the App.
+            conn.setRequestProperty("Authorization", "GoogleLogin auth="
+                    + this._token);
+            // User agent is required for getting the mobile pages, which is
+            // what most API calls pull data from.
+            conn.setRequestProperty(
+                    "User-agent",
+                    "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.A.B.C Safari/525.13");
 
             // Get the response
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(
+                    conn.getInputStream()));
             StringBuffer sb = new StringBuffer();
             String line;
             while ((line = rd.readLine()) != null) {
@@ -212,7 +218,7 @@ public class Voice
             }
             rd.close();
             String res = sb.toString();
-            
+
             return res;
         } catch (Exception ex) {
             Log.e(this.getClass().getName(), ex.getMessage(), ex);

@@ -19,22 +19,22 @@ public class Conversation
 {
     private class JSONKeys
     {
-        
+
     }
-    
+
     private class HTMLQuery
     {
-        
-    }
-    
-    private ArrayList<Person> _contacts = null; // Future proofing
-    private HashMap<String, Message> _messages = null;
 
-    private String _id = null;
-    private boolean _isStarred = false;
-    private boolean _isSpam = false;
-    private boolean _isRead = false;
-    private boolean _isNew = false;
+    }
+
+    private ArrayList<Person>        _contacts  = null; // Future proofing
+    private HashMap<String, Message> _messages  = null;
+
+    private String                   _id        = null;
+    private boolean                  _isStarred = false;
+    private boolean                  _isSpam    = false;
+    private boolean                  _isRead    = false;
+    private boolean                  _isNew     = false;
 
     public boolean isStarred()
     {
@@ -61,7 +61,7 @@ public class Conversation
         // Get oldest message, return date
         return null;
     }
-    
+
     public String id()
     {
         return _id;
@@ -79,8 +79,8 @@ public class Conversation
 
         _contacts = new ArrayList<Person>();
         _contacts.add(new Person(gvJSON));
-        
-        //Get messages for this conversation
+
+        // Get messages for this conversation
         _messages = new HashMap<String, Message>();
         JSONArray msgs = gvJSON.getJSONArray("children");
         Message tmpMessage = null;
@@ -90,17 +90,17 @@ public class Conversation
                 _messages.put(tmpMessage.id(), tmpMessage);
         }
     }
-    
+
     public Conversation(Element htmlNode)
     {
         _messages = new HashMap<String, Message>();
         Message currMessage = null;
         List<Element> nodes = htmlNode.getAllElements();
-        
+
         _contacts = new ArrayList<Person>();
         _contacts.add(new Person(htmlNode));
-        
-        for(Element node : nodes) {
+
+        for (Element node : nodes) {
             currMessage = new Message(node, _contacts.get(0));
             _messages.put(currMessage.id(), currMessage);
         }
@@ -168,9 +168,9 @@ public class Conversation
     {
         return false;
     }
-    
+
     public void merge(Conversation convMerge)
     {
-        //TODO: Merge the messages
+        // TODO: Merge the messages
     }
 }

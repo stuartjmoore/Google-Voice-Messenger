@@ -20,15 +20,15 @@ public class Message
         public static final String Time = "span.gc-message-sms-time";
         public static final String From = "span.gc-message-sms-from";
     }
-    
+
     private class JSONKeys
     {
-        public static final String Id = "id";
-        public static final String Text = "messageText";
-        public static final String Type = "type";
+        public static final String Id        = "id";
+        public static final String Text      = "messageText";
+        public static final String Type      = "type";
         public static final String StartTime = "startTime";
     }
-    
+
     public enum MESSAGETYPE
     {
         // From Google Voice
@@ -57,11 +57,11 @@ public class Message
         }
     }
 
-    private Person _from = null;
-    private Date _date = null;
-    private String _text = null;
+    private Person      _from = null;
+    private Date        _date = null;
+    private String      _text = null;
     private MESSAGETYPE _type = MESSAGETYPE.NOTINIT;
-    private String _id = null;
+    private String      _id   = null;
 
     public Person from()
     {
@@ -90,7 +90,8 @@ public class Message
 
     /**
      * Creates a new message from a Google Voice JSON response object
-     * @throws JSONException 
+     * 
+     * @throws JSONException
      */
     public Message(JSONObject gvJSON) throws JSONException
     {
@@ -103,25 +104,27 @@ public class Message
 
         gvJSON.remove(_id);
     }
-    
+
     public Message(Element htmlNode, Person contact)
     {
         System.out.print(htmlNode.select(HTMLQuery.Text).first().ownText());
         _text = htmlNode.select(HTMLQuery.Text).first().data();
-        String from = htmlNode.select(HTMLQuery.From).first().data().replaceAll(":", "");
-        if(from.toUpperCase() == "ME") {
-            _from = null; //TODO: we need a 'Me' contact
+        String from = htmlNode.select(HTMLQuery.From).first().data()
+                .replaceAll(":", "");
+        if (from.toUpperCase() == "ME") {
+            _from = null; // TODO: we need a 'Me' contact
             _type = MESSAGETYPE.SENT;
         } else {
             _from = contact;
             _type = MESSAGETYPE.RECEIVED;
         }
         SimpleDateFormat time = new SimpleDateFormat("MM/dd/yy h:m a");
-        /*try {
-            _date = time.parse(htmlNode.select(XPathQuery.Time).first().data());
-        } catch (ParseException e) {
-            Log.e(this.getClass().getName(), e.getMessage(), e);
-        }*/
+        /*
+         * try { _date =
+         * time.parse(htmlNode.select(XPathQuery.Time).first().data()); } catch
+         * (ParseException e) { Log.e(this.getClass().getName(), e.getMessage(),
+         * e); }
+         */
     }
 
     public boolean send()
