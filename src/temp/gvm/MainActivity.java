@@ -32,9 +32,10 @@ public class MainActivity extends Activity
         
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setListNavigationCallbacks(
                 // Specify a SpinnerAdapter to populate the dropdown list.
-                new ArrayAdapter(
+                new ArrayAdapter<String>(
                         actionBar.getThemedContext(),
                         android.R.layout.simple_list_item_1,
                         android.R.id.text1,
@@ -64,8 +65,10 @@ public class MainActivity extends Activity
                 // Choose a google account that has Google Voice.
                 Intent accountIntent = AccountPicker.newChooseAccountIntent(null, null, new String[] { "com.google" }, false, null, "grandcentral", new String[] { "service_grandcentral" }, null);
                 this.startActivityForResult(accountIntent, MainActivity.REQUEST_ACCOUNT);
+                Log.i("Purple","Starting Account Chooser Intent");
             } catch (Exception e) {
                 // TODO No account support
+                Log.e("Purple","No Account Support");
             }
         }
     }
@@ -76,6 +79,7 @@ public class MainActivity extends Activity
         AccountManager manager = AccountManager.get(this);
         // Create an account object for the selected account
         Account account = new Account(accountName, "com.google");
+        Log.i("Purple","Getting Token for Grandcentral Service");
         manager.getAuthToken(account, "grandcentral", null, true, new TokenCallback(), null);
     }
     

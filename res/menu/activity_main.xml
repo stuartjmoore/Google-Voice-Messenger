@@ -1,9 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:id="@+id/menu_refresh"
+    <item
+        android:id="@+id/menu_compose"
+        android:orderInCategory="97"
+        android:showAsAction="always"
+        android:title="@string/menu_compose"/>
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_menu_search"
+        android:orderInCategory="98"
+        android:showAsAction="always"
+        android:title="@string/menu_search"/>
+    <item
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/ic_menu_refresh"
         android:orderInCategory="99"
-        android:title="@string/menu_refresh"
-        android:showAsAction="never"/>
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_refresh"/>
     <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
@@ -12,7 +25,7 @@
     <item
         android:id="@+id/menu_support"
         android:orderInCategory="101"
-        android:title="@string/menu_support"
-        android:showAsAction="never"/>
+        android:showAsAction="never"
+        android:title="@string/menu_support"/>
 
 </menu>
