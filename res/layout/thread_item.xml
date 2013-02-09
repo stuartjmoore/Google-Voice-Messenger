@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="75dp" >
+    android:layout_height="72dp" >
 
     <QuickContactBadge
         android:id="@+id/thread_contact_badge"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp" />
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp" />
 
     <TextView
         android:id="@+id/thread_contact_firstname"
@@ -20,7 +20,7 @@
         android:layout_alignTop="@+id/thread_contact_badge"
         android:layout_toRightOf="@+id/thread_contact_badge"
         android:text="Kayla"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="4dp"
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -32,7 +32,7 @@
         android:layout_alignBottom="@id/thread_contact_firstname"
         android:layout_toRightOf="@id/thread_contact_firstname"
         android:text="Kazanjian"
-        android:layout_marginLeft="3dp"
+        android:layout_marginLeft="4dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -54,8 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/thread_contact_lastname"
+        android:layout_marginRight="4dp"
         android:text="Yesterday"
-        android:layout_marginRight="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
