@@ -106,6 +106,7 @@ public class Conversation
 
     public Conversation(Element htmlNode)
     {
+        _id = htmlNode.attr("id");
         _messages = new HashMap<String, Message>();
         Message currMessage = null;
         Elements nodes = htmlNode.select("div.gc-message-sms-row");

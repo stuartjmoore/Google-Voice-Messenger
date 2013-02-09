@@ -70,7 +70,7 @@ public class Voice
         try {
             gvJSON = new JSONObject(Utilities.getSubstring(gvResponse,
                     JSONResponse_Start, JSONResponse_End, true, false, false));
-            Log.i("Purple JSON",gvJSON.toString());
+            // Log.i("Purple JSON",gvJSON.toString());
             
         } catch (JSONException ex) {
             Log.e(this.getClass().getName(), ex.getMessage(), ex);
