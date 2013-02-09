@@ -107,25 +107,6 @@ public class MainActivity extends Activity
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.thread_item, R.id.thread_message, values);
         listView.setAdapter(adapter);
-
-        Thread thread = new Thread() {
-            @Override
-            public void run()
-            {
-                final HashMap<String,Conversation> i = MainActivity.this.getVoiceInstance().getInbox();
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        MainActivity.this.updateInbox(i);
-                    }
-                });
-            }
-        };
-        thread.start();
-    }
-    
-    public void updateInbox(HashMap<String,Conversation> inbox)
-    {
-        Log.i("Purple","Stuff");
     }
 
     private class TokenCallback implements AccountManagerCallback<Bundle>
