@@ -66,6 +66,11 @@ public class Conversation
     {
         return _id;
     }
+    
+    public HashMap<String, Message> messages()
+    {
+        return _messages;
+    }
 
     /**
      * Creates a new conversation from a Google Voice JSON response object

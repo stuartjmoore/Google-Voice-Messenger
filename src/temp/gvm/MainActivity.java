@@ -1,11 +1,15 @@
 package temp.gvm;
 
+import java.util.HashMap;
+
+import temp.gvm.api.Conversation;
 import temp.gvm.api.Voice;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -93,6 +97,35 @@ public class MainActivity extends Activity
     protected void setupLayout()
     {
         this.setContentView(R.layout.activity_main);
+
+        /*
+         * Temporary, just for now sort of thing.
+         */
+        ListView listView = (ListView) this.findViewById(R.id.message_list);
+        String[] values = new String[] { "Hello\n└─ Hello, my love <3" };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.thread_item, R.id.thread_message, values);
+        listView.setAdapter(adapter);
+
+        Thread thread = new Thread() {
+            @Override
+            public void run()
+            {
+                final HashMap<String,Conversation> i = MainActivity.this.getVoiceInstance().getInbox();
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        MainActivity.this.updateInbox(i);
+                    }
+                });
+            }
+        };
+        thread.start();
+    }
+    
+    public void updateInbox(HashMap<String,Conversation> inbox)
+    {
+        Log.i("Purple","Stuff");
     }
 
     private class TokenCallback implements AccountManagerCallback<Bundle>
@@ -128,5 +161,10 @@ public class MainActivity extends Activity
         } else {
             // TODO Error Checking
         }
+    }
+
+    private Voice getVoiceInstance()
+    {
+        return ((PurpleApplication) MainActivity.this.getApplication()).googleVoice;
     }
 }

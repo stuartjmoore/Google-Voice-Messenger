@@ -107,7 +107,7 @@ public class Message
 
     public Message(Element htmlNode, Person contact)
     {
-        System.out.print(htmlNode.select(HTMLQuery.Text).first().ownText());
+        // System.out.print(htmlNode.select(HTMLQuery.Text).first().ownText());
         _text = htmlNode.select(HTMLQuery.Text).first().data();
         String from = htmlNode.select(HTMLQuery.From).first().data()
                 .replaceAll(":", "");
