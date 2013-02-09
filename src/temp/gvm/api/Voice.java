@@ -11,6 +11,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import android.util.Log;
 
@@ -67,33 +70,34 @@ public class Voice
         try {
             gvJSON = new JSONObject(Utilities.getSubstring(gvResponse,
                     JSONResponse_Start, JSONResponse_End, true, false, false));
+            Log.i("Purple JSON",gvJSON.toString());
+            
         } catch (JSONException ex) {
             Log.e(this.getClass().getName(), ex.getMessage(), ex);
         }
+        
+        
         String gvHTML = Utilities.getSubstring(gvResponse, HTMLResponse_Start,
                 HTMLResponse_End, true, false, false);
-        ConversationParser bgParser = new ConversationParser(ret);
+        
+        // Assume first param is the HTML
+        String htmlResponse = gvHTML;
 
-        // Start the parser
-        bgParser.execute(gvHTML);
+        Document respDoc = Jsoup.parse(htmlResponse);
+        List<Element> nodes = respDoc.select("div.gc-message");
+        Conversation currConvo = null;
 
-        try {
-            tmpConversations = gvJSON.getJSONArray("conversation");
-        } catch (Exception ex) {
-            Log.e(this.getClass().getName(), ex.getMessage(), ex);
-            return null;
+        for (Element htmlNode : nodes) {
+            if (htmlNode == null)
+                continue;
+
+            currConvo = new Conversation(htmlNode);
+
+            ret.put(currConvo.id(), currConvo);
         }
 
-        for (int i = 0; i < tmpConversations.length(); i++) {
-            try {
-                tmpConvo = new Conversation(tmpConversations.getJSONObject(i));
-            } catch (Exception ex) {
-                Log.e(this.getClass().getName(), ex.getMessage(), ex);
-                return null;
-            }
-            ret.put(tmpConvo.id(), tmpConvo);
-        }
-
+        // TODO Merge with JSON Conversation
+        
         return ret;
     }
 

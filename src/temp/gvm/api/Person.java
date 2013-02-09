@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,13 +24,13 @@ public class Person
 {
     private final class HTMLQuery
     {
-        public static final String Name        = "a.gc-under";                // Not
-                                                                               // sure
-                                                                               // if
-                                                                               // this
-                                                                               // is
-                                                                               // right
-                                                                               // search
+        public static final String Name        = "a.gc-under";                 // Not
+                                                                                // sure
+                                                                                // if
+                                                                                // this
+                                                                                // is
+                                                                                // right
+                                                                                // search
         public static final String Id          = "span.gc-message-contact-id";
         public static final String PhoneNumber = "span.gc-message-type";
         public static final String PortraitURL = "div.gc-message-portrait img";
@@ -83,10 +84,16 @@ public class Person
     public Person(Element htmlNode)
     {
         _nameOnServer = htmlNode.select(HTMLQuery.Name).first().text();
-        _id = htmlNode.select(HTMLQuery.Id).first().text();
         try {
-            _photoURL = new URL("http://google.com/" + htmlNode.select(HTMLQuery.PortraitURL).first()
-                    .attr("src"));
+            _id = htmlNode.select(HTMLQuery.Id).first().text();
+        } catch (Exception e) {
+            Log.i("Purple Person-HTML",htmlNode.toString());
+            _id = "-1";
+        }
+        try {
+            _photoURL = new URL("http://google.com/"
+                    + htmlNode.select(HTMLQuery.PortraitURL).first()
+                            .attr("src"));
         } catch (MalformedURLException e) {
             Log.e(this.getClass().getName(), e.getMessage(), e);
             _photoURL = null;
@@ -141,7 +148,7 @@ public class Person
     private String getRawPhoneNumber(String formattedNumber)
     {
         // Regex replace comma, parens, plus and space
-        return formattedNumber.replaceAll("[,\\(\\)\\+ ]", "");
+        return formattedNumber.replaceAll("[a-z-,\\(\\)\\+ ]", "");
     }
 
     /**
@@ -411,7 +418,37 @@ public class Person
         } finally {
             cursor.close();
         }
-
     }
 
+    public Uri getContactUri(Context context)
+    {
+        // TODO return a lookup URI if the person is not yet a contact
+        // e.g. a phone number with no contact information
+        final String[] projURI = new String[] { ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.LOOKUP_KEY };
+        final Uri uri = Uri.withAppendedPath(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI,
+                Uri.encode(_phoneNumber));
+        final Cursor cursor = context.getContentResolver().query(uri, projURI,
+                null, null, null);
+
+        ContentValues values = new ContentValues();
+
+        try {
+            Uri ret = null;
+            if (cursor.moveToFirst()) {
+                long id = cursor.getLong(cursor
+                        .getColumnIndex(ContactsContract.Contacts._ID));
+                String lookup = cursor.getString(cursor
+                        .getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+                ret = ContactsContract.Contacts.getLookupUri(id, lookup);
+            }
+            return ret;
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), ex.getMessage(), ex);
+            return null;
+        } finally {
+            cursor.close();
+        }
+    }
 }

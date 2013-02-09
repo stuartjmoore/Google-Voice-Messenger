@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thread_contact_badge"
         android:layout_toRightOf="@+id/thread_contact_badge"
-        android:text="Kayla"
         android:layout_marginLeft="4dp"
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -31,7 +30,6 @@
         android:layout_alignBaseline="@id/thread_contact_firstname"
         android:layout_alignBottom="@id/thread_contact_firstname"
         android:layout_toRightOf="@id/thread_contact_firstname"
-        android:text="Kazanjian"
         android:layout_marginLeft="4dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -45,7 +43,7 @@
         android:layout_below="@+id/thread_contact_firstname"
         android:gravity="center_vertical"
         android:maxLines="2"
-        android:text="I love you too, Oppa &lt;3"
+        android:text="Hello World"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView

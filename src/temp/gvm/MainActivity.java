@@ -1,15 +1,27 @@
 package temp.gvm;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import temp.gvm.api.Conversation;
+import temp.gvm.api.Person;
 import temp.gvm.api.Voice;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.QuickContactBadge;
+import android.widget.TextView;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -21,7 +33,9 @@ import com.google.android.gms.common.AccountPicker;
 
 public class MainActivity extends Activity
 {
-    private final static int REQUEST_ACCOUNT = 1;
+    private final static int                REQUEST_ACCOUNT = 1;
+    protected HashMap<String, Conversation> conversation    = new HashMap<String, Conversation>();
+    protected ConversationAdapater adapter = new ConversationAdapater();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -42,8 +56,8 @@ public class MainActivity extends Activity
         // Specify a SpinnerAdapter to populate the drop down list.
                 new ArrayAdapter<String>(actionBar.getThemedContext(),
                         android.R.layout.simple_list_item_1,
-                        android.R.id.text1,
-                        getResources().getStringArray(R.array.menu_main_spinner)),
+                        android.R.id.text1, getResources().getStringArray(
+                                R.array.menu_main_spinner)),
 
                 // Provide a listener to be called when an item is selected.
                 new ActionBar.OnNavigationListener() {
@@ -55,23 +69,6 @@ public class MainActivity extends Activity
                         return true;
                     }
                 });
-
-
-
-        /*
-         * Temporary, just for testing without pinging Google.
-         */
-        this.setContentView(R.layout.activity_main);
-        ListView listView = (ListView) this.findViewById(R.id.message_list);
-        String[] values = new String[] { "Hello\n↳ Hello, my love <3" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.thread_item, R.id.thread_message, values);
-        listView.setAdapter(adapter);
-        /*
-         * End Temporary
-         */
-        
-        
         this.setupVoice();
     }
 
@@ -114,23 +111,19 @@ public class MainActivity extends Activity
     {
         this.setContentView(R.layout.activity_main);
 
-        /*
-         * Temporary, just for now sort of thing.
-         */
         ListView listView = (ListView) this.findViewById(R.id.message_list);
-        String[] values = new String[] { "Hello\n↳ Hello, my love <3" };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.thread_item, R.id.thread_message, values);
-        listView.setAdapter(adapter);
+        listView.setAdapter(this.adapter);
 
         Thread thread = new Thread() {
             @Override
             public void run()
             {
-                final HashMap<String,Conversation> i = MainActivity.this.getVoiceInstance().getInbox();
+                final HashMap<String, Conversation> i = MainActivity.this
+                        .getVoiceInstance().getInbox();
                 MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
+                    public void run()
+                    {
                         MainActivity.this.updateInbox(i);
                     }
                 });
@@ -138,10 +131,12 @@ public class MainActivity extends Activity
         };
         thread.start();
     }
-    
-    public void updateInbox(HashMap<String,Conversation> inbox)
+
+    public void updateInbox(HashMap<String, Conversation> inbox)
     {
-        Log.i("Purple","Stuff");
+        this.conversation = inbox;
+        this.adapter.notifyDataSetChanged();
+        Log.i("Purple","Conversation size: " + inbox.size());
     }
 
     private class TokenCallback implements AccountManagerCallback<Bundle>
@@ -164,6 +159,73 @@ public class MainActivity extends Activity
                 e.printStackTrace();
             }
         }
+    }
+
+    private class ConversationAdapater extends BaseAdapter
+    {
+
+        @Override
+        public int getCount()
+        {
+            return MainActivity.this.conversation.size();
+        }
+
+        @Override
+        public String getItem(int position)
+        {
+            Set<String> keys = MainActivity.this.conversation.keySet();
+            String[] sKeys = new String[this.getCount()];
+            keys.toArray(sKeys);
+            return sKeys[position];
+        }
+
+        @Override
+        public long getItemId(int position)
+        {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            View v = convertView;
+            if (v == null) {
+                LayoutInflater inflater = getLayoutInflater();
+                v = inflater.inflate(R.layout.thread_item, parent, false);
+            }
+
+            String id = this.getItem(position);
+            Conversation convo = MainActivity.this.conversation.get(id);
+
+            // Populate the View (this should eventually be done with tags for
+            // speed)
+            TextView firstName = (TextView) v
+                    .findViewById(R.id.thread_contact_firstname);
+            TextView lastName = (TextView) v
+                    .findViewById(R.id.thread_contact_lastname);
+            TextView message = (TextView) v.findViewById(R.id.thread_message);
+            TextView timestamp = (TextView) v
+                    .findViewById(R.id.thread_timestamp);
+            QuickContactBadge badge = (QuickContactBadge) v
+                    .findViewById(R.id.thread_contact_badge);
+            
+            Person p = convo.contacts().get(0);
+            firstName.setText(p.getNameGiven());
+            lastName.setText(p.getNameOnServer());
+            
+            // Assign the contact to the contact badge
+            if(p.getID() != "-1") {
+                badge.assignContactUri(p.getContactUri(MainActivity.this));
+                badge.setMode(ContactsContract.QuickContact.MODE_LARGE);
+                badge.setImageURI(p.getContactPhoto_Local(MainActivity.this));
+            } else {
+                badge.setImageResource(R.drawable.ic_contact_picture);
+                badge.assignContactFromPhone(p.getPhoneNumber(), true);
+            }
+
+            return v;
+        }
+
     }
 
     protected void onActivityResult(final int requestCode,

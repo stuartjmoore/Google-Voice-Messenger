@@ -70,6 +70,11 @@ public class Conversation
         return _id;
     }
     
+    public List<Person> contacts()
+    {
+        return this._contacts;
+    }
+    
     public HashMap<String, Message> messages()
     {
         return _messages;
