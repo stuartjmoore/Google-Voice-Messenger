@@ -32,7 +32,7 @@ public class ConversationParser extends
         HashMap<String, Conversation> ret = new HashMap<String, Conversation>();
 
         Document respDoc = Jsoup.parse(htmlResponse);
-        List<Element> nodes = respDoc.getAllElements();
+        List<Element> nodes = respDoc.select("div.gc-message");
         Conversation currConvo = null;
 
         for (Element htmlNode : nodes) {

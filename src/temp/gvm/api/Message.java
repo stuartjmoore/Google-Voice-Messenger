@@ -107,9 +107,8 @@ public class Message
 
     public Message(Element htmlNode, Person contact)
     {
-        // System.out.print(htmlNode.select(HTMLQuery.Text).first().ownText());
-        _text = htmlNode.select(HTMLQuery.Text).first().data();
-        String from = htmlNode.select(HTMLQuery.From).first().data()
+        _text = htmlNode.select(HTMLQuery.Text).first().text();
+        String from = htmlNode.select(HTMLQuery.From).first().text()
                 .replaceAll(":", "");
         if (from.toUpperCase() == "ME") {
             _from = null; // TODO: we need a 'Me' contact

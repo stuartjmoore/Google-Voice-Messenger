@@ -32,7 +32,7 @@ public class Person
                                                                                // search
         public static final String Id          = "span.gc-message-contact-id";
         public static final String PhoneNumber = "span.gc-message-type";
-        public static final String PortraitURL = "div.gc-message-portrait";
+        public static final String PortraitURL = "div.gc-message-portrait img";
     }
 
     private final class JSONKeys
@@ -82,11 +82,11 @@ public class Person
      */
     public Person(Element htmlNode)
     {
-        _nameOnServer = htmlNode.select(HTMLQuery.Name).first().data();
-        _id = htmlNode.select(HTMLQuery.Id).first().data();
+        _nameOnServer = htmlNode.select(HTMLQuery.Name).first().text();
+        _id = htmlNode.select(HTMLQuery.Id).first().text();
         try {
-            _photoURL = new URL(htmlNode.select(HTMLQuery.PortraitURL).first()
-                    .data());
+            _photoURL = new URL("http://google.com/" + htmlNode.select(HTMLQuery.PortraitURL).first()
+                    .attr("src"));
         } catch (MalformedURLException e) {
             Log.e(this.getClass().getName(), e.getMessage(), e);
             _photoURL = null;
@@ -95,7 +95,7 @@ public class Person
         Element phoneNumElement = htmlNode.select(HTMLQuery.PhoneNumber)
                 .first();
         if (phoneNumElement != null) {
-            _phoneNumberDisplay = phoneNumElement.data();
+            _phoneNumberDisplay = phoneNumElement.text();
             _phoneNumber = getRawPhoneNumber(_phoneNumberDisplay);
         }
     }

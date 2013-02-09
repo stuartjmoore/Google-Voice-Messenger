@@ -2,3 +2,4 @@ bin/
 gen/
 project.properties
 .DS_Store
+Thumbs.db

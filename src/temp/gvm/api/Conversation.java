@@ -10,6 +10,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import android.util.Log;
 
 /**
  * A conversation is a grouping of back-and-forth messages Google Voice groups
@@ -100,7 +103,7 @@ public class Conversation
     {
         _messages = new HashMap<String, Message>();
         Message currMessage = null;
-        List<Element> nodes = htmlNode.getAllElements();
+        Elements nodes = htmlNode.select("div.gc-message-sms-row");
 
         _contacts = new ArrayList<Person>();
         _contacts.add(new Person(htmlNode));
