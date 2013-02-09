@@ -39,11 +39,11 @@ public class MainActivity extends Activity
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setListNavigationCallbacks(
-        // Specify a SpinnerAdapter to populate the dropdown list.
+        // Specify a SpinnerAdapter to populate the drop down list.
                 new ArrayAdapter<String>(actionBar.getThemedContext(),
                         android.R.layout.simple_list_item_1,
-                        android.R.id.text1, new String[] { "Inbox",
-                                "All Texts", "Trash" }),
+                        android.R.id.text1,
+                        getResources().getStringArray(R.array.menu_main_spinner)),
 
                 // Provide a listener to be called when an item is selected.
                 new ActionBar.OnNavigationListener() {

@@ -6,7 +6,8 @@
     
     <string-array name="menu_main_spinner">
         <item>Inbox</item>
-        <item>All Texts</item>
+        <item>Texts</item>
+        <item>Calls</item>
         <item>Trash</item>
     </string-array>
     
