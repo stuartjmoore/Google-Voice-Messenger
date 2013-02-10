@@ -69,6 +69,9 @@ public class MainActivity extends Activity
                         return true;
                     }
                 });
+        
+        this.setupLayout();
+        
         this.setupVoice();
     }
 
@@ -112,9 +115,11 @@ public class MainActivity extends Activity
         this.setContentView(R.layout.activity_main);
 
         ListView listView = (ListView) this.findViewById(R.id.message_list);
-
         listView.setAdapter(this.adapter);
-
+    }
+    
+    protected void setupConversationList()
+    {
         Thread thread = new Thread() {
             @Override
             public void run()
@@ -153,7 +158,7 @@ public class MainActivity extends Activity
                     ((PurpleApplication) MainActivity.this.getApplication()).googleVoice = new Voice(
                             tok);
                 }
-                MainActivity.this.setupLayout();
+                MainActivity.this.setupConversationList();
             } catch (Exception e) {
                 // TODO Error Checking
                 e.printStackTrace();
@@ -211,7 +216,7 @@ public class MainActivity extends Activity
             
             Person p = convo.contacts().get(0);
             firstName.setText(p.getNameGiven());
-            lastName.setText(p.getNameOnServer());
+            lastName.setText(p.getNameFamily());
             
             // Assign the contact to the contact badge
             if(p.getID() != "-1") {

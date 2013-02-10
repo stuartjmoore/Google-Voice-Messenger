@@ -84,6 +84,7 @@ public class Person
     public Person(Element htmlNode)
     {
         _nameOnServer = htmlNode.select(HTMLQuery.Name).first().text();
+        this.setName(_nameOnServer);
         try {
             _id = htmlNode.select(HTMLQuery.Id).first().text();
         } catch (Exception e) {
@@ -266,6 +267,24 @@ public class Person
     public String getNameOnServer()
     {
         return _nameOnServer;
+    }
+    
+    /**
+     * Parses the first and last name out of a string
+     * 
+     * @param nameFull
+     * @return
+     */
+    public boolean setName(String nameFull)
+    {
+        if(nameFull.contains(" ")) {
+            int pos = nameFull.indexOf(" ");
+            this.setNameGiven(nameFull.substring(0, pos));
+            this.setNameFamily(nameFull.substring(pos+1));
+        } else {
+            this.setNameGiven(nameFull);
+        }
+        return true;
     }
 
     // QUESTION: Do we need to have set, or will this be pulled directly from
