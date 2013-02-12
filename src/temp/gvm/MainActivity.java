@@ -219,13 +219,21 @@ public class MainActivity extends Activity
             lastName.setText(p.getNameFamily());
             
             // Assign the contact to the contact badge
-            if(p.getID() != "-1") {
+            Uri contactPhoto = null;
+            Uri contactUri = p.getContactUri(MainActivity.this);
+            badge.setMode(ContactsContract.QuickContact.MODE_LARGE);
+            if(contactUri != null) {
                 badge.assignContactUri(p.getContactUri(MainActivity.this));
-                badge.setMode(ContactsContract.QuickContact.MODE_LARGE);
-                badge.setImageURI(p.getContactPhoto_Local(MainActivity.this));
+                contactPhoto = p.getContactPhoto_Local(MainActivity.this);
+            } else {
+                Log.i("Purple Phone",p.getPhoneNumber());
+                badge.assignContactFromPhone(p.getPhoneNumber(), true);
+            }
+            if(contactPhoto != null) {
+                Log.i("Purple","Contact URI: " + contactPhoto);
+                badge.setImageURI(contactPhoto);
             } else {
                 badge.setImageResource(R.drawable.ic_contact_picture);
-                badge.assignContactFromPhone(p.getPhoneNumber(), true);
             }
 
             return v;

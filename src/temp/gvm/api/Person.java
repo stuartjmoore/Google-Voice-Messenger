@@ -88,7 +88,6 @@ public class Person
         try {
             _id = htmlNode.select(HTMLQuery.Id).first().text();
         } catch (Exception e) {
-            Log.i("Purple Person-HTML",htmlNode.toString());
             _id = "-1";
         }
         try {
@@ -430,6 +429,7 @@ public class Person
                 ret = cursor.getString(cursor
                         .getColumnIndex(ContactsContract.Contacts.PHOTO_URI));
             }
+            if(ret == null) return null;
             return Uri.parse(ret);
         } catch (Exception ex) {
             Log.e(this.getClass().getName(), ex.getMessage(), ex);
