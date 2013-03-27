@@ -3,3 +3,7 @@ gen/
 project.properties
 .DS_Store
 Thumbs.db
+GVM.eml
+GVM.iml
+.idea/
+.settings/
